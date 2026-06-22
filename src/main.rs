@@ -26,9 +26,9 @@ fn get_event_key() -> Result<Event, Box<dyn Error>> {
     if let Event::Key(key_event) = crossterm::event::read()? {
       return Ok(Event::Key(key_event));
     }
+
   }
 }
-
 fn key_pressed() -> Result<bool, Box<dyn Error>> {
   let mut stdout = stdout();
   match get_event_key()? {
