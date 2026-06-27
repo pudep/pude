@@ -21,12 +21,9 @@ pub fn run() -> Result<(), Box<dyn Error>> {
 
 fn engine(buffer: &mut Buffer, stdout: &mut Stdout) -> Result<(), Box<dyn std::error::Error>> {
   loop {
-    queue!(
-      stdout,
-      terminal::Clear(terminal::ClearType::All),
-      cursor::MoveTo(0, 0)
-    )?;
+    queue!(stdout, cursor::Hide, cursor::MoveTo(0,0))?;
     lines::render_lines(&buffer.rope, stdout, buffer.cursor)?;
+    queue!(stdout, cursor::Show)?;
     stdout.flush()?;
     if crate::key::core::key_pressed(&mut buffer.cursor)? {
       break;
