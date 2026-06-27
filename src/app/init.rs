@@ -1,9 +1,7 @@
 use crate::app;
-use std::error::Error;
-/// A clean wrapper arround crossterm::terminal::disable_raw_mode()
-/// Removes the % sign that displays at the end of program.
+use crate::prelude::cterm::all::*;
+use crate::prelude::std::all::*;
 fn disable_raw_mode() -> Result<(), Box<dyn std::error::Error>> {
-  // must have no "" inside its parameter brace
   println!();
   crossterm::terminal::disable_raw_mode()?;
   Ok(())
@@ -11,7 +9,13 @@ fn disable_raw_mode() -> Result<(), Box<dyn std::error::Error>> {
 
 pub fn init() -> Result<(), Box<dyn Error>> {
   crossterm::terminal::enable_raw_mode()?;
-  app::heart::life()?;
+  let mut stdout = stdout();
+  app::loopin::main_loop(&mut stdout)?;
   disable_raw_mode()?;
+  execute!(
+    stdout,
+    terminal::Clear(terminal::ClearType::All),
+    cursor::MoveTo(0, 0)
+  )?;
   Ok(())
 }
