@@ -20,6 +20,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
 }
 
 fn engine(buffer: &mut Buffer, stdout: &mut Stdout) -> Result<(), Box<dyn std::error::Error>> {
+  queue!(stdout, terminal::EnableLineWrap)?;
   loop {
     queue!(stdout, cursor::Hide, cursor::MoveTo(0,0))?;
     lines::render_lines(&buffer.rope, stdout, buffer.cursor)?;
