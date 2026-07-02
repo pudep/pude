@@ -9,8 +9,9 @@ pub fn push_space_char(width: u16) -> String {
 }
 
 pub fn smart_soft_wrap(width: u16, text: &str) -> String {
+  let i = width.saturating_sub(5).max(3);
   let options =
-    textwrap::Options::new(width.into()).word_splitter(textwrap::WordSplitter::NoHyphenation);
+    textwrap::Options::new(i as usize).word_splitter(textwrap::WordSplitter::NoHyphenation).word_separator(textwrap::WordSeparator::AsciiSpace);
 
   let wrapped_text: Vec<&str> = textwrap::wrap(text, options)
     .into_iter()
